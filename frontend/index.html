@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f6f7f4">
+    <meta name="description" content="A complete walkthrough of the E-Commerce API, with a working storefront, customer account, cart, orders, and admin tools.">
+    <title>Forma — E-commerce API Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/ui/styles.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" id="sidebar">
+        <a class="brand" href="/ui/">
+          <span class="brand-mark">f.</span>
+          <span><strong>forma</strong><small>COMMERCE STUDIO</small></span>
+        </a>
+        <div class="workspace-label">WORKSPACE</div>
+        <nav class="navigation" aria-label="Main navigation">
+          <button class="nav-link active" data-view="overview"><span class="nav-icon">◫</span>Overview</button>
+          <button class="nav-link" data-view="shop"><span class="nav-icon">▦</span>Storefront</button>
+          <button class="nav-link" data-view="cart"><span class="nav-icon">⌑</span>Shopping cart<span id="cart-count" class="nav-count">0</span></button>
+          <button class="nav-link" data-view="orders"><span class="nav-icon">▤</span>Orders</button>
+          <button class="nav-link" data-view="account"><span class="nav-icon">♙</span>My account</button>
+          <button class="nav-link admin-only hidden" data-view="admin"><span class="nav-icon">⌘</span>Admin studio</button>
+          <button class="nav-link" data-view="guide"><span class="nav-icon">ⓘ</span>How it works</button>
+        </nav>
+        <div class="sidebar-bottom">
+          <div class="api-mini">
+            <div class="api-mini-title"><span class="status-dot" id="sidebar-dot"></span> API STATUS</div>
+            <strong id="sidebar-api-status">Connecting…</strong>
+            <small id="sidebar-api-url">127.0.0.1:8000</small>
+          </div>
+          <a class="docs-link" href="/docs" target="_blank" rel="noreferrer"><span>↗</span> Open API docs</a>
+          <div class="side-note">A visual guide to your<br>FastAPI commerce backend.</div>
+        </div>
+      </aside>
+
+      <main class="main-area">
+        <header class="topbar">
+          <button class="mobile-menu" id="mobile-menu" aria-label="Toggle navigation">☰</button>
+          <div class="breadcrumbs"><span>Workspace</span><span class="crumb-slash">/</span><strong id="page-crumb">Overview</strong></div>
+          <div class="topbar-right">
+            <span class="env-pill"><span class="status-dot" id="topbar-dot"></span><span id="topbar-status">Checking API</span></span>
+            <button class="account-button" id="account-button">
+              <span class="avatar" id="account-avatar">G</span>
+              <span class="account-copy"><strong id="account-name">Guest account</strong><small id="account-role">Sign in to shop</small></span>
+              <span class="chevron">⌄</span>
+            </button>
+          </div>
+        </header>
+
+        <div class="content">
+          <section class="view active" id="view-overview">
+            <div class="welcome-row">
+              <div><div class="eyebrow"><span class="eyebrow-line"></span> YOUR COMMERCE WORKSPACE</div><h1>Good things<br>are <span>in motion.</span></h1><p class="intro">A working storefront and a guided tour of your e-commerce API. Browse the catalog, place an order, or explore how each piece connects.</p>
+                <div class="hero-actions"><button class="button button-dark" data-go="shop">Explore storefront <span>↗</span></button><button class="button button-light" data-go="guide">Take the quick tour <span>→</span></button></div>
+              </div>
+              <div class="hero-art" aria-hidden="true"><div class="art-orbit orbit-one"></div><div class="art-orbit orbit-two"></div><div class="art-circle"><span>f.</span></div><div class="art-chip chip-top">catalog <span>↗</span></div><div class="art-chip chip-bottom"><i></i> orders in sync</div><div class="art-spark">✳</div></div>
+            </div>
+
+            <div class="section-heading"><div><div class="eyebrow">LIVE FROM YOUR API</div><h2>The storefront, at a glance</h2></div><button class="text-button" data-go="shop">Browse all products <span>→</span></button></div>
+            <div class="stat-grid">
+              <article class="stat-card"><div class="stat-top"><span>CATALOG</span><span class="stat-icon purple">▦</span></div><div class="stat-value" id="stat-products">—</div><div class="stat-caption">products available</div><div class="stat-foot"><span class="tiny-dot purple-dot"></span>Live from <code>GET /products</code></div></article>
+              <article class="stat-card"><div class="stat-top"><span>COLLECTIONS</span><span class="stat-icon orange">◇</span></div><div class="stat-value" id="stat-categories">—</div><div class="stat-caption">product categories</div><div class="stat-foot"><span class="tiny-dot orange-dot"></span>Live from <code>GET /categories</code></div></article>
+              <article class="stat-card"><div class="stat-top"><span>YOUR ORDERS</span><span class="stat-icon green">↗</span></div><div class="stat-value" id="stat-orders">—</div><div class="stat-caption">orders in your account</div><div class="stat-foot"><span class="tiny-dot green-dot"></span><code>GET /orders</code> · sign in to view</div></article>
+            </div>
+            <div class="bottom-grid">
+              <article class="panel flow-panel"><div class="panel-heading"><div><div class="eyebrow">FROM BROWSE TO BOX</div><h3>A simple journey, end to end.</h3></div><span class="panel-spark">✳</span></div>
+                <div class="flow-steps"><div class="flow-step"><span class="flow-number">01</span><div><strong>Explore</strong><small>Discover products and collections.</small></div><code>GET /products</code></div><div class="flow-step"><span class="flow-number">02</span><div><strong>Collect</strong><small>Add pieces to your personal cart.</small></div><code>POST /cart/items</code></div><div class="flow-step"><span class="flow-number">03</span><div><strong>Checkout</strong><small>Stock is checked; your order is created.</small></div><code>POST /orders/checkout</code></div><div class="flow-step"><span class="flow-number">04</span><div><strong>Follow along</strong><small>Track your order from pending to delivered.</small></div><code>GET /orders</code></div></div>
+              </article>
+              <article class="panel health-panel"><div class="panel-heading"><div><div class="eyebrow">SYSTEM CHECK</div><h3>Everything connected?</h3></div><span class="health-icon">⌁</span></div>
+                <div class="health-status"><span class="health-pulse" id="health-pulse"></span><div><strong id="health-title">Checking the API…</strong><small id="health-detail">Connecting to your service.</small></div></div><div class="health-divider"></div><div class="health-row"><span>Backend</span><strong id="health-backend">Checking…</strong></div><div class="health-row"><span>Database</span><strong id="health-database">Checking…</strong></div><div class="health-row"><span>OpenAPI docs</span><a href="/docs" target="_blank" rel="noreferrer">View reference ↗</a></div><button class="health-refresh" id="refresh-health">↻ &nbsp; Check connection</button>
+              </article>
+            </div>
+            <div class="callout"><span class="callout-mark">✳</span><div><strong>New around here?</strong><span>Take a two-minute guided tour of the API, the database models, and how the order workflow fits together.</span></div><button class="text-button" data-go="guide">Show me around <span>→</span></button></div>
+          </section>
+
+          <section class="view" id="view-shop">
+            <div class="page-heading"><div><div class="eyebrow">THE CUSTOMER EXPERIENCE</div><h1>Made to be <span>discovered.</span></h1><p>Browse products from the live catalog. Add a favorite to your cart to see the checkout flow in action.</p></div><button class="button button-light" data-go="cart">View cart <span>⌑</span></button></div>
+            <div class="catalog-toolbar"><label class="search-field"><span>⌕</span><input id="product-search" type="search" placeholder="Find something lovely..." autocomplete="off"><kbd>/</kbd></label><select id="category-filter" aria-label="Filter by category"><option value="">All collections</option></select><span class="result-count" id="product-count">Loading products…</span></div>
+            <div class="product-grid" id="product-grid"></div>
+            <div class="empty-state hidden" id="products-empty"><span>✳</span><strong>No products just yet</strong><p>Your product catalog is empty. An administrator can add products in the Admin Studio.</p></div>
+            <div class="empty-state hidden" id="products-error"><span>⌁</span><strong>Couldn’t load the catalog</strong><p id="products-error-detail"></p><button class="button button-light" id="retry-products">Try again</button></div>
+          </section>
+
+          <section class="view" id="view-cart">
+            <div class="page-heading"><div><div class="eyebrow">YOUR PERSONAL BAG</div><h1>A little <span>something.</span></h1><p>Your cart saves for later. Inventory is confirmed when you check out.</p></div><button class="text-button" data-go="shop">← Back to the shop</button></div>
+            <div class="cart-layout"><div class="panel cart-panel"><div class="panel-heading"><div><div class="eyebrow">SHOPPING CART</div><h3 id="cart-heading">Your selected pieces</h3></div><button class="text-button hidden" id="clear-cart">Clear all</button></div><div id="cart-items"></div><div class="empty-state hidden" id="cart-empty"><span>⌑</span><strong>Your cart is taking a little break</strong><p>Find something you love in the storefront and it’ll show up here.</p><button class="button button-dark" data-go="shop">Explore the shop <span>→</span></button></div></div><aside class="panel checkout-panel"><div class="eyebrow">ORDER SUMMARY</div><h3>The good stuff.</h3><div class="summary-line"><span>Items subtotal</span><strong id="cart-subtotal">$0.00</strong></div><div class="summary-line"><span>Shipping</span><span class="muted">Not calculated</span></div><div class="summary-rule"></div><div class="summary-line summary-total"><span>Total</span><strong id="cart-total">$0.00</strong></div><p class="checkout-note">Shipping and payment are not configured in this demo. Checkout creates a pending order and updates inventory.</p><button class="button button-dark checkout-button" id="checkout-button">Place demo order <span>→</span></button><div class="secure-note">↗ &nbsp; Uses the live <code>/orders/checkout</code> endpoint</div></aside></div>
+          </section>
+
+          <section class="view" id="view-orders">
+            <div class="page-heading"><div><div class="eyebrow">FROM YOUR FIRST CLICK TO DELIVERY</div><h1>It’s all <span>in the details.</span></h1><p>Follow your orders through each step. Sign in to see your personal order history.</p></div><button class="button button-light" id="refresh-orders">↻ &nbsp; Refresh</button></div>
+            <div class="order-intro"><span class="order-intro-icon">↗</span><div><strong>Every order has a story.</strong><p>Pending orders can be cancelled. Administrators move orders forward through processing, shipped, and delivered.</p></div></div>
+            <div class="orders-list" id="orders-list"></div>
+            <div class="empty-state hidden" id="orders-empty"><span>▤</span><strong>No orders, no rush</strong><p>When you place your first order, you can follow its journey right here.</p><button class="button button-dark" data-go="shop">Find your first favorite <span>→</span></button></div>
+          </section>
+
+          <section class="view" id="view-account">
+            <div class="page-heading"><div><div class="eyebrow">YOUR LITTLE CORNER</div><h1>It’s nice to <span>meet you.</span></h1><p>Keep your account details up to date. Your profile is private to you.</p></div></div>
+            <div class="account-layout"><article class="panel account-profile-card"><div class="profile-avatar" id="profile-avatar">G</div><div><div class="eyebrow">YOUR ACCOUNT</div><h3 id="profile-display-name">Guest account</h3><span class="profile-role" id="profile-display-role">Sign in to manage your profile</span></div><div class="account-card-note"><strong>Good to know</strong><span>Customer accounts can browse the catalog, save a cart, place orders, and track order status. Admin permissions are assigned securely by the store owner.</span></div><button class="button button-light hidden" id="profile-signout">Sign out of this device</button></article><article class="panel account-edit-card"><div class="eyebrow">PROFILE DETAILS</div><h3>A few details about you.</h3><p class="form-hint">Your email is your login. You can update your display name or mobile number.</p><form id="profile-form" class="stack-form"><label>Your name<input name="full_name" autocomplete="name" required maxlength="255"></label><label>Email address<input name="email" type="email" disabled></label><label>Mobile number<input name="mobile" autocomplete="tel" required maxlength="32"></label><label>Account type<input name="role" disabled></label><button class="button button-dark" type="submit">Save profile <span>→</span></button></form><div class="profile-guest hidden" id="profile-guest"><span>♙</span><strong>Your account lives here.</strong><p>Sign in or create a customer account to manage your details and order history.</p><button class="button button-dark" id="profile-signin">Sign in or create account <span>→</span></button></div></article></div>
+          </section>
+
+          <section class="view" id="view-admin">
+            <div class="page-heading"><div><div class="eyebrow">YOUR BEHIND-THE-SCENES TOOLKIT</div><h1>Set the scene, <span>set the pace.</span></h1><p>Manage the catalog and keep orders moving. These tools call the admin-protected API endpoints.</p></div><span class="role-badge">⌘ &nbsp; ADMIN STUDIO</span></div>
+            <div class="admin-tabs"><button class="admin-tab active" data-admin-tab="products">Products</button><button class="admin-tab" data-admin-tab="categories">Categories</button><button class="admin-tab" data-admin-tab="orders">Order desk</button><button class="admin-tab" data-admin-tab="users">Customers</button></div>
+            <div class="admin-content" id="admin-products"><div class="admin-grid"><article class="panel admin-form-panel"><div class="eyebrow">BUILD YOUR CATALOG</div><h3>Add a product</h3><p class="form-hint">Give it a name, a price, and a place to belong.</p><form id="product-form" class="stack-form"><label>Product name<input name="name" placeholder="e.g. Everyday Ceramic Mug" required maxlength="255"></label><label>Description<textarea name="description" placeholder="What makes this piece special?" rows="3"></textarea></label><div class="form-row"><label>Price <span class="muted">(USD)</span><input name="price" type="number" min="0.01" step="0.01" placeholder="24.00" required></label><label>Stock<input name="stock" type="number" min="0" step="1" placeholder="20" required></label></div><label>Collection<select name="category_id" id="admin-product-category" required><option value="">Choose a collection…</option></select></label><button class="button button-dark" type="submit">Add to the catalog <span>→</span></button></form></article><article class="panel admin-list-panel"><div class="panel-heading"><div><div class="eyebrow">LIVE CATALOG</div><h3>Your products</h3></div><button class="text-button" id="admin-refresh-products">Refresh ↻</button></div><div id="admin-product-list"></div></article></div></div>
+            <div class="admin-content hidden" id="admin-categories"><div class="admin-grid"><article class="panel admin-form-panel"><div class="eyebrow">ORGANIZE YOUR STORE</div><h3>Create a collection</h3><p class="form-hint">Collections make it easier for customers to browse.</p><form id="category-form" class="stack-form"><label>Collection name<input name="name" placeholder="e.g. Home & Living" required maxlength="255"></label><button class="button button-dark" type="submit">Create collection <span>→</span></button></form></article><article class="panel admin-list-panel"><div class="panel-heading"><div><div class="eyebrow">COLLECTIONS</div><h3>Your categories</h3></div><button class="text-button" id="admin-refresh-categories">Refresh ↻</button></div><div id="admin-category-list"></div></article></div></div>
+            <div class="admin-content hidden" id="admin-orders"><article class="panel admin-list-panel"><div class="panel-heading"><div><div class="eyebrow">KEEP THINGS MOVING</div><h3>Order desk</h3><p class="form-hint">Move orders forward one step at a time.</p></div><button class="text-button" id="admin-refresh-orders">Refresh ↻</button></div><div id="admin-order-list"></div></article></div>
+            <div class="admin-content hidden" id="admin-users"><article class="panel admin-list-panel"><div class="panel-heading"><div><div class="eyebrow">THE PEOPLE BEHIND THE ORDERS</div><h3>Customer accounts</h3><p class="form-hint">Read-only account directory from the admin API.</p></div><button class="text-button" id="admin-refresh-users">Refresh ↻</button></div><div id="admin-user-list"></div></article></div>
+          </section>
+
+          <section class="view" id="view-guide">
+            <div class="page-heading guide-heading"><div><div class="eyebrow">A FRIENDLY FIELD GUIDE</div><h1>Let’s pull back <span>the curtain.</span></h1><p>Here’s how the pieces fit together, from the first API request to a fulfilled order.</p></div><a class="button button-light" href="/docs" target="_blank" rel="noreferrer">Explore all endpoints ↗</a></div>
+            <div class="guide-banner"><div class="guide-banner-mark">f.</div><div><div class="eyebrow">THE BIG PICTURE</div><strong>FastAPI listens. PostgreSQL remembers. You make it lovely.</strong><p>The browser calls the FastAPI endpoints. FastAPI validates requests, checks identity and permissions, and reads or updates data in PostgreSQL through SQLAlchemy.</p></div></div>
+            <div class="guide-grid">
+              <article class="panel guide-card"><span class="guide-number">01</span><div class="guide-icon guide-purple">♙</div><h3>Identity & access</h3><p>Customers register and log in. A signed JWT is returned and sent with protected requests. The API verifies the token and checks the user’s current role in the database.</p><code>POST /register · /login</code><code>GET /users/me</code></article>
+              <article class="panel guide-card"><span class="guide-number">02</span><div class="guide-icon guide-orange">▦</div><h3>Catalog & collections</h3><p>Products belong to categories. Anyone can browse; only an admin can create, edit, or delete catalog entries. Search and category filters run on the API.</p><code>GET /products?q=...</code><code>POST /categories · /products</code></article>
+              <article class="panel guide-card"><span class="guide-number">03</span><div class="guide-icon guide-green">⌑</div><h3>Cart & inventory</h3><p>A cart belongs to the signed-in customer. It does not reserve stock. Checkout confirms availability, records the order, and deducts inventory in one transaction.</p><code>POST /cart/items</code><code>POST /orders/checkout</code></article>
+              <article class="panel guide-card"><span class="guide-number">04</span><div class="guide-icon guide-blue">↗</div><h3>Orders & fulfillment</h3><p>Each order stores its price snapshot and line items. Customers see only their own orders; admins can advance status through the allowed fulfillment steps.</p><code>GET /orders · /orders/{id}</code><code>PATCH /orders/{id}/status</code></article>
+              <article class="panel guide-card"><span class="guide-number">05</span><div class="guide-icon guide-pink">⬡</div><h3>Data & migrations</h3><p>SQLAlchemy models map users, categories, products, carts, orders, and order items. Alembic migrations evolve the database schema safely.</p><code>models/</code><code>alembic upgrade head</code></article>
+              <article class="panel guide-card"><span class="guide-number">06</span><div class="guide-icon guide-yellow">⌁</div><h3>Health & documentation</h3><p>The health route checks database connectivity. FastAPI generates an interactive OpenAPI reference so you can inspect and try every endpoint.</p><code>GET /health</code><code>GET /docs</code></article>
+            </div>
+            <div class="panel lifecycle-panel"><div class="eyebrow">THE ORDER LIFECYCLE</div><h3>One order, four little milestones.</h3><div class="lifecycle"><div class="life-step"><span>01</span><i>◷</i><strong>Pending</strong><small>Created at checkout</small></div><div class="life-connector"></div><div class="life-step"><span>02</span><i>◌</i><strong>Processing</strong><small>Being prepared</small></div><div class="life-connector"></div><div class="life-step"><span>03</span><i>↗</i><strong>Shipped</strong><small>On the way</small></div><div class="life-connector"></div><div class="life-step"><span>04</span><i>✳</i><strong>Delivered</strong><small>Happily arrived</small></div></div><div class="life-footnote">Only pending orders can be cancelled. Administrators advance each order one step at a time.</div></div>
+            <div class="scope-note"><strong>Made for the core commerce journey.</strong><span>Payments, shipping, tax calculation, and email delivery are not connected. The checkout in this studio creates a demo order without charging anyone.</span></div>
+          </section>
+
+          <footer class="footer"><span><span class="footer-mark">f.</span> &nbsp;FORMA COMMERCE STUDIO</span><span>Made to explain the moving parts. <a href="/docs" target="_blank" rel="noreferrer">API reference ↗</a></span></footer>
+        </div>
+      </main>
+    </div>
+
+    <div class="modal-backdrop hidden" id="auth-modal">
+      <section class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="auth-title">
+        <button class="modal-close" id="modal-close" aria-label="Close dialog">×</button>
+        <div class="auth-brand">f.</div><div class="eyebrow" id="auth-eyebrow">YOUR ACCOUNT, YOUR WAY</div><h2 id="auth-title">Welcome <span>back.</span></h2><p class="auth-subtitle" id="auth-subtitle">Sign in to see your cart, place an order, and follow its journey.</p>
+        <div class="auth-tabs"><button class="auth-tab active" data-auth-mode="login">Sign in</button><button class="auth-tab" data-auth-mode="register">Create account</button></div>
+        <form id="auth-form" class="stack-form"><label class="register-field hidden">Your name<input name="full_name" autocomplete="name" placeholder="Alex Morgan"></label><label>Email address<input name="email" type="email" autocomplete="email" placeholder="you@example.com" required></label><label class="register-field hidden">Mobile number<input name="mobile" autocomplete="tel" placeholder="+1 555 000 0000"></label><label>Password<input name="password" type="password" autocomplete="current-password" placeholder="At least 8 characters" required minlength="8"></label><button class="button button-dark auth-submit" type="submit">Sign in <span>→</span></button></form>
+        <div class="auth-divider"><span>or keep exploring</span></div><button class="text-button auth-browse" id="auth-browse">Continue as a guest <span>→</span></button>
+        <p class="auth-privacy">Your account is yours. Passwords are securely hashed; this page stores only your temporary sign-in token in this browser.</p>
+      </section>
+    </div>
+
+    <div class="toast-region" id="toast-region" aria-live="polite"></div>
+    <script src="/ui/app.js" defer></script>
+  </body>
+</html>
